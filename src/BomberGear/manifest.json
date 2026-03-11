@@ -1,9 +1,10 @@
 {
   "Name": "BomberGear",
   "Author": "kaniclub",
-  "Version": "1.0.1",
+  "Version": "1.0.2",
   "Description": "Place bombs with Bomber Gear.",
   "UniqueID": "kaniclub.BomberGear",
   "EntryDll": "BomberGear.dll",
-  "MinimumApiVersion": "4.0.0"
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:43512" ]
 }

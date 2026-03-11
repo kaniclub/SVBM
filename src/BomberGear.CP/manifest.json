@@ -1,11 +1,12 @@
 {
   "Name": "BomberGear (Content Pack)",
   "Author": "kaniclub",
-  "Version": "1.0.1",
+  "Version": "1.0.2",
   "Description": "Adds Bomber Gear items and translations.",
   "UniqueID": "kaniclub.BomberGear.CP",
   "MinimumApiVersion": "4.0.0",
   "ContentPackFor": {
     "UniqueID": "Pathoschild.ContentPatcher"
-  }
+  },
+  "UpdateKeys": [ "Nexus:43512" ]
 }
