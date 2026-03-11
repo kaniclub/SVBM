@@ -1,7 +1,7 @@
 {
   "Name": "BomberGear (Content Pack)",
   "Author": "kaniclub",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Adds Bomber Gear items and translations.",
   "UniqueID": "kaniclub.BomberGear.CP",
   "MinimumApiVersion": "4.0.0",

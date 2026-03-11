@@ -3,7 +3,9 @@
 // - 爆風破壊判定
 // - ドロップ分類判定
 // などで共通利用する
+// - ID優先で判定しつつ、未知IDは Name / DisplayName / Description でも補助判定する
 // ----------------------------
+using System;
 using System.Collections.Generic;
 
 namespace BomberGear.GameData;
@@ -143,6 +145,30 @@ internal static class ObjectIds
     };
 
     // ----------------------------
+    // 名前ベースの石判定
+    // - 部分一致にすると Stone Fence / Stone Floor まで巻き込むので完全一致にする
+    // ----------------------------
+    private static readonly HashSet<string> StoneNames = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "Stone",
+        "Stone Base"
+    };
+
+    // ----------------------------
+    // 説明文ベースの鉱石入り石判定
+    // - 未知IDでも、説明文に ore 系の文言があれば鉱石入り石として扱う
+    // ----------------------------
+    private static readonly string[] OreStoneDescriptionHints =
+    {
+        "ore in this stone",
+        "stone ore in this stone",
+        "copper ore",
+        "iron ore",
+        "gold ore",
+        "iridium ore"
+    };
+
+    // ----------------------------
     // 発掘ポイントか
     // ----------------------------
     public static bool IsArtifactSpot(string objectId)
@@ -160,18 +186,48 @@ internal static class ObjectIds
 
     // ----------------------------
     // 通常石か
+    // - 既知IDを優先
+    // - 未知IDは名前で補助判定
+    // - 鉱石入り石っぽい説明なら通常石にはしない
     // ----------------------------
     public static bool IsStone(string objectId)
     {
         return StoneIds.Contains(objectId);
     }
 
+    public static bool IsStone(string objectId, string? internalName, string? displayName, string? description)
+    {
+        if (IsStone(objectId))
+            return true;
+
+        if (IsOreStone(objectId))
+            return false;
+
+        if (!HasStoneName(internalName, displayName))
+            return false;
+
+        return !HasOreStoneHint(description);
+    }
+
     // ----------------------------
     // 鉱石入り石か
+    // - 既知IDを優先
+    // - 未知IDは「石の名前 + oreっぽい説明文」で補助判定
     // ----------------------------
     public static bool IsOreStone(string objectId)
     {
         return OreStoneIds.Contains(objectId);
+    }
+
+    public static bool IsOreStone(string objectId, string? internalName, string? displayName, string? description)
+    {
+        if (IsOreStone(objectId))
+            return true;
+
+        if (!HasStoneName(internalName, displayName))
+            return false;
+
+        return HasOreStoneHint(description);
     }
 
     // ----------------------------
@@ -181,6 +237,12 @@ internal static class ObjectIds
     public static bool IsStoneLike(string objectId)
     {
         return IsStone(objectId) || IsOreStone(objectId);
+    }
+
+    public static bool IsStoneLike(string objectId, string? internalName, string? displayName, string? description)
+    {
+        return IsStone(objectId, internalName, displayName, description)
+            || IsOreStone(objectId, internalName, displayName, description);
     }
 
     // ----------------------------
@@ -204,9 +266,48 @@ internal static class ObjectIds
             return string.Empty;
 
         const string objectPrefix = "(O)";
-        if (qualifiedItemId.StartsWith(objectPrefix))
+        if (qualifiedItemId.StartsWith(objectPrefix, StringComparison.Ordinal))
             return qualifiedItemId.Substring(objectPrefix.Length);
 
         return qualifiedItemId;
+    }
+
+    // ----------------------------
+    // 石の名前か
+    // - internalName と displayName の両方を見る
+    // ----------------------------
+    private static bool HasStoneName(string? internalName, string? displayName)
+    {
+        string normalizedInternalName = NormalizeText(internalName);
+        string normalizedDisplayName = NormalizeText(displayName);
+
+        return StoneNames.Contains(normalizedInternalName)
+            || StoneNames.Contains(normalizedDisplayName);
+    }
+
+    // ----------------------------
+    // 鉱石入り石っぽい説明か
+    // ----------------------------
+    private static bool HasOreStoneHint(string? description)
+    {
+        string normalizedDescription = NormalizeText(description);
+        if (normalizedDescription.Length == 0)
+            return false;
+
+        foreach (string hint in OreStoneDescriptionHints)
+        {
+            if (normalizedDescription.Contains(hint, StringComparison.OrdinalIgnoreCase))
+                return true;
+        }
+
+        return false;
+    }
+
+    // ----------------------------
+    // 文字列の前後空白を除去
+    // ----------------------------
+    private static string NormalizeText(string? text)
+    {
+        return text?.Trim() ?? string.Empty;
     }
 }

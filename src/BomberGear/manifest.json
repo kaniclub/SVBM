@@ -1,7 +1,7 @@
 {
   "Name": "BomberGear",
   "Author": "kaniclub",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Place bombs with Bomber Gear.",
   "UniqueID": "kaniclub.BomberGear",
   "EntryDll": "BomberGear.dll",
