@@ -1,0 +1,100 @@
+{
+  "Format": "2.9.0",
+  "Changes": [
+    {
+      "Action": "EditData",
+      "Target": "Data/Weapons",
+      "Entries": {
+        "kaniclub.BomberGear_BomberGear": {
+          "Name": "kaniclub.BomberGear_BomberGear",
+          "DisplayName": "{{i18n:bomber-gear.name}}",
+          "Description": "{{i18n:bomber-gear.description}}",
+          "Type": 0,
+          "Texture": "Mods/kaniclub.BomberGear.CP/Objects",
+          "SpriteIndex": 0,
+          "MinDamage": 1,
+          "MaxDamage": 3,
+          "Knockback": 1,
+          "Speed": 0,
+          "Precision": 0,
+          "Defense": 0,
+          "AreaOfEffect": 0,
+          "CritChance": 0.02,
+          "CritMultiplier": 3,
+          "CanBeLostOnDeath": false
+        }
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "Entries": {
+        "kaniclub.BomberGear_RemoteBombChip": {
+          "Name": "kaniclub.BomberGear_RemoteBombChip",
+          "DisplayName": "{{i18n:remote-bomb-chip.name}}",
+          "Description": "{{i18n:remote-bomb-chip.description}}",
+          "Type": "Basic",
+          "Category": -15,
+          "Price": 300,
+          "Texture": "Mods/kaniclub.BomberGear.CP/Objects",
+          "SpriteIndex": 1
+        },
+        "kaniclub.BomberGear_PierceBombChip": {
+          "Name": "kaniclub.BomberGear_PierceBombChip",
+          "DisplayName": "{{i18n:pierce-bomb-chip.name}}",
+          "Description": "{{i18n:pierce-bomb-chip.description}}",
+          "Type": "Basic",
+          "Category": -15,
+          "Price": 300,
+          "Texture": "Mods/kaniclub.BomberGear.CP/Objects",
+          "SpriteIndex": 2
+        },
+        "kaniclub.BomberGear_KickChip": {
+          "Name": "kaniclub.BomberGear_KickChip",
+          "DisplayName": "{{i18n:kick-chip.name}}",
+          "Description": "{{i18n:kick-chip.description}}",
+          "Type": "Basic",
+          "Category": -15,
+          "Price": 250,
+          "Texture": "Mods/kaniclub.BomberGear.CP/Objects",
+          "SpriteIndex": 3
+        },
+        "kaniclub.BomberGear_ThrowChip": {
+          "Name": "kaniclub.BomberGear_ThrowChip",
+          "DisplayName": "{{i18n:throw-chip.name}}",
+          "Description": "{{i18n:throw-chip.description}}",
+          "Type": "Basic",
+          "Category": -15,
+          "Price": 250,
+          "Texture": "Mods/kaniclub.BomberGear.CP/Objects",
+          "SpriteIndex": 4
+        },
+        "kaniclub.BomberGear_PowerCore": {
+          "Name": "kaniclub.BomberGear_PowerCore",
+          "DisplayName": "{{i18n:power-core.name}}",
+          "Description": "{{i18n:power-core.description}}",
+          "Type": "Basic",
+          "Category": -15,
+          "Price": 200,
+          "Texture": "Mods/kaniclub.BomberGear.CP/Objects",
+          "SpriteIndex": 5
+        },
+        "kaniclub.BomberGear_BombBag": {
+          "Name": "kaniclub.BomberGear_BombBag",
+          "DisplayName": "{{i18n:bomb-bag.name}}",
+          "Description": "{{i18n:bomb-bag.description}}",
+          "Type": "Basic",
+          "Category": -15,
+          "Price": 200,
+          "Texture": "Mods/kaniclub.BomberGear.CP/Objects",
+          "SpriteIndex": 6
+        }
+      }
+    },
+    {
+      "Action": "Load",
+      "Target": "Mods/kaniclub.BomberGear.CP/Objects",
+      "FromFile": "assets/Objects.png"
+    }
+  ]
+}
