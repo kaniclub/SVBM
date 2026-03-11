@@ -4,6 +4,8 @@
 // 通過できない草Object は特殊対応で削除する
 // 石は一撃化してからツルハシ処理する
 // 発掘ポイントは壁扱いせず、そのまま通す
+// - 石判定は ID 優先
+// - 未知IDでも Name / DisplayName / Description で補助判定する
 // ----------------------------
 using BomberGear.GameData;
 using Microsoft.Xna.Framework;
@@ -24,6 +26,9 @@ internal sealed class ObjectBreaker
         _ = power;
 
         string objectId = ObjectIds.ExtractObjectId(obj.ItemId, obj.QualifiedItemId);
+        string objectName = obj.Name ?? string.Empty;
+        string objectDisplayName = obj.DisplayName ?? string.Empty;
+        string objectDescription = obj.getDescription() ?? string.Empty;
 
         // 発掘ポイントは壁扱いしない
         // 壊さず、そのまま爆風を通す
@@ -46,7 +51,8 @@ internal sealed class ObjectBreaker
         }
 
         // 石系 -> Pickaxe
-        if (ObjectIds.IsStoneLike(objectId))
+        // 未知IDでも Stone / 石 / Stone Base などの名前なら対象にする
+        if (ObjectIds.IsStoneLike(objectId, objectName, objectDisplayName, objectDescription))
         {
             Tool tool = toolHelper.CreatePickaxe();
             toolHelper.PrepareObjectForOneHit(obj);
