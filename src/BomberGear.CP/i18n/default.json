@@ -1,0 +1,22 @@
+{
+  "bomber-gear.name": "Bomber Gear",
+  "bomber-gear.description": "A special combat tool for placing bomber bombs.",
+
+  "remote-bomb-chip.name": "Remote Bomb Chip",
+  "remote-bomb-chip.description": "A socket chip that grants remote detonation to bomber bombs.",
+
+  "pierce-bomb-chip.name": "Pierce Bomb Chip",
+  "pierce-bomb-chip.description": "A socket chip that grants piercing power to bomber bombs.",
+
+  "kick-chip.name": "Kick Chip",
+  "kick-chip.description": "A socket chip that lets you kick placed bombs.",
+
+  "throw-chip.name": "Throw Chip",
+  "throw-chip.description": "A socket chip that lets you lift and throw bombs.",
+
+  "power-core.name": "Power Core",
+  "power-core.description": "A socket core that increases bomb power by 1.",
+
+  "bomb-bag.name": "Bomb Bag",
+  "bomb-bag.description": "A socket module that increases max placed bombs by 1."
+}

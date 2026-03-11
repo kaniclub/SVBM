@@ -1,0 +1,22 @@
+{
+  "bomber-gear.name": "ボンバーギア",
+  "bomber-gear.description": "ボンバーマン用の特別な戦闘装備。",
+
+  "remote-bomb-chip.name": "リモコン爆弾チップ",
+  "remote-bomb-chip.description": "爆弾にリモコン起爆の特性を付与するソケットチップ。",
+
+  "pierce-bomb-chip.name": "貫通爆弾チップ",
+  "pierce-bomb-chip.description": "爆弾に貫通性能を付与するソケットチップ。",
+
+  "kick-chip.name": "キックチップ",
+  "kick-chip.description": "設置した爆弾を蹴れるようになるソケットチップ。",
+
+  "throw-chip.name": "スローチップ",
+  "throw-chip.description": "爆弾を持ち上げて投げられるようになるソケットチップ。",
+
+  "power-core.name": "パワーコア",
+  "power-core.description": "爆弾の火力を1上げるソケットコア。",
+
+  "bomb-bag.name": "ボムバッグ",
+  "bomb-bag.description": "同時設置数を1増やすソケットモジュール。"
+}
