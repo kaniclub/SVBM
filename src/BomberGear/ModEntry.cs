@@ -253,14 +253,31 @@ internal sealed class ModEntry : Mod
     }
 
     // ----------------------------
-    // ワープ時
-    // - 死亡処理のロック解除
+    // マップ移動時
+    // - 移動したプレイヤー本人の爆弾だけ消す
+    // - 持ち上げ見た目も、移動したプレイヤー本人に対して解除する
+    // - ただし、入力保留やビジュアルのクリアなど
+    //   この端末のローカル専用状態の後始末は
+    //   ローカルプレイヤー移動時だけ行う
     // ----------------------------
     private void OnWarped(object? sender, WarpedEventArgs e)
     {
+        if (!Context.IsWorldReady)
+            return;
+
+        bombs.ClearBombsForPlayer(e.Player.UniqueMultiplayerID);
+        if (e.Player is not null)
+            e.Player.showNotCarrying();
+
+        // ----------------------------
+        // ここから下は、この端末のローカル専用状態の後始末
+        // - 他プレイヤー移動時には不要
+        // ----------------------------
         if (!e.IsLocalPlayer)
             return;
 
+        explosionVisuals.Clear();
+        bombInputHandler.ClearPendingSpecialPress();
         deathSocketResetLocked = false;
     }
 

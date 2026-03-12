@@ -76,38 +76,15 @@ internal sealed partial class BombManager
             stepTicks: stepTicks
         );
 
+        who.showNotCarrying();
         location.playSound("woodyHit");
         return true;
     }
 
     // ----------------------------
-    // 描画直前に、保持中プレイヤーへ carry pose を強制
-    // ----------------------------
-    public void PrepareHeldBombCarryPose(GameLocation currentLocation)
-    {
-        foreach (var pair in bombsByPlayer)
-        {
-            foreach (var bomb in pair.Value)
-            {
-                if (!bomb.IsHeld)
-                    continue;
-
-                Farmer? holder = FindOwnerFarmer(bomb.HeldByPlayerId);
-                if (holder is null)
-                    continue;
-
-                if (holder.currentLocation?.Name != currentLocation.Name)
-                    continue;
-
-                holder.showCarrying();
-            }
-        }
-    }
-
-    // ----------------------------
     // 持ち上げ中爆弾の更新
     // - プレイヤー移動に追従
-    // - マップ移動にも追従
+    // - キャリー継続不可なら、その保持爆弾だけ消す
     // ----------------------------
     private void UpdateHeldBombState(ActiveBomb bomb)
     {
@@ -117,15 +94,59 @@ internal sealed partial class BombManager
         Farmer? holder = FindOwnerFarmer(bomb.HeldByPlayerId);
         if (holder is null)
         {
-            bomb.ClearCarryState();
+            RemoveBomb(bomb);
             return;
         }
 
         if (holder.currentLocation is null)
+        {
+            RemoveBomb(bomb);
             return;
+        }
+
+        if (!CanFarmerKeepHoldingBomb(holder))
+        {
+            holder.showNotCarrying();
+            RemoveBomb(bomb);
+            return;
+        }
 
         bomb.SetLocationName(holder.currentLocation.Name);
         bomb.MoveTo(holder.Tile);
+    }
+
+    // ----------------------------
+    // そのプレイヤーが爆弾保持を継続できるか
+    // - バニラ carrying を崩したくない状況では継続不可
+    // - ボンバーギアを選択していない場合も継続不可
+    // ----------------------------
+    private static bool CanFarmerKeepHoldingBomb(Farmer holder)
+    {
+        if (holder.mount is not null)
+            return false;
+
+        if (holder.isAnimatingMount)
+            return false;
+
+        if (holder.IsSitting())
+            return false;
+
+        if (holder.onBridge.Value)
+            return false;
+
+        if (Game1.eventUp)
+            return false;
+
+        if (Game1.killScreen)
+            return false;
+
+        if (holder.CurrentItem is null)
+            return false;
+
+        if (holder.CurrentItem.ItemId != Items.ItemIds.BomberGear)
+            return false;
+
+        return true;
     }
 
     // ----------------------------
