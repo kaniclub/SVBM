@@ -105,6 +105,23 @@ internal sealed partial class BombManager
     }
 
     // ----------------------------
+    // 指定プレイヤーの爆弾だけをクリア
+    // - 持ち上げ中 / 投げ中 / 地上爆弾を含めて消す
+    // - 他プレイヤーの爆弾には触れない
+    // ----------------------------
+    public void ClearBombsForPlayer(long playerId)
+    {
+        if (!bombsByPlayer.TryGetValue(playerId, out var list))
+            return;
+
+        foreach (var bomb in list.ToList())
+            StopFuseSound(bomb);
+
+        foreach (var bomb in list.ToList())
+            RemoveBomb(bomb);
+    }
+
+    // ----------------------------
     // 指定プレイヤーの地上爆弾一覧を取得
     // - 持ち上げ中 / 投げ中は除外
     // - 追加順のまま返すため、先頭が最も古い爆弾
@@ -265,11 +282,14 @@ internal sealed partial class BombManager
     {
         var readyBombs = new List<ActiveBomb>();
 
-        foreach (var pair in bombsByPlayer)
+        foreach (var pair in bombsByPlayer.ToList())
         {
             foreach (var bomb in pair.Value.ToList())
             {
                 UpdateHeldBombState(bomb);
+
+                if (!ContainsBomb(bomb))
+                    continue;
 
                 if (!bomb.IsHeld && !bomb.IsThrown)
                     UpdateOwnerPassThroughState(bomb);
@@ -293,7 +313,7 @@ internal sealed partial class BombManager
         // - リモコンバクダンは通常時は進めない
         // - 誘爆予約済みなら進める
         // ----------------------------
-        foreach (var pair in bombsByPlayer)
+        foreach (var pair in bombsByPlayer.ToList())
         {
             foreach (var bomb in pair.Value.ToList())
             {
@@ -433,7 +453,7 @@ internal sealed partial class BombManager
     // ----------------------------
     private void ApplyLingeringChainReactions()
     {
-        foreach (var pair in bombsByPlayer)
+        foreach (var pair in bombsByPlayer.ToList())
         {
             foreach (var bomb in pair.Value.ToList())
             {
